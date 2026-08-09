@@ -1,0 +1,11 @@
+CategoryID,CategoryName,Complexity,DepartmentID
+1,Login Issues,Easy,1
+2,Job Posting Failure,Medium,3
+3,Resume Parsing,Hard,3
+4,Billing,Medium,2
+5,Interview Scheduling,Medium,3
+6,API Error,Hard,5
+7,Email Notification,Easy,1
+8,Candidate Import,Medium,3
+9,Performance Issue,Hard,1
+10,Feature Request,Hard,4
