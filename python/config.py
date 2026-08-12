@@ -28,6 +28,14 @@ PLAN_FACTOR = {
     "Enterprise": 0.75
 }
 
+# Customer Demand Factor
+
+CUSTOMER_TICKET_DEMAND_FACTOR = {
+    "Basic": 0.80,
+    "Professional": 1.00,
+    "Enterprise": 1.30
+}
+
 SLA_MATRIX = {
     "Basic": {
         "Low": 72,

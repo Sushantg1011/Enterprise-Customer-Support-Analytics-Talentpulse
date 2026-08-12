@@ -1,0 +1,162 @@
+import pandas as pd
+from datetime import datetime
+from id_generator import TicketIDGenerator
+from business_rules import (get_ticket_time, get_ticket_priority,
+                            get_sla_hours, select_customer_by_demand)
+
+from python.generate_tickets import eligible_employees
+
+
+def generate_ticket_created_at(simulation_date):
+    """
+        Generates a ticket creation timestamp
+        for a specific simulation date.
+        """
+    hour, minute, second = get_ticket_time()
+    return datetime(simulation_date.year, simulation_date.month,
+                    simulation_date.day, hour, minute, second)
+
+
+def select_customer(customers):
+    """
+    Selects one customer using
+    plan-based ticket demand.
+    """
+    return select_customer_by_demand(customers)
+
+
+def select_category(categories):
+    """
+        Selects one support category
+        from the category master data.
+        """
+    return categories.sample(n=1).iloc[0]
+
+def select_employee(category, employees):
+    """
+        Selects an employee from the department
+        responsible for the selected category.
+        """
+    department_id = category['DepartmentID']
+    eligible_employees = employees[employees['DepartmentID'] == department_id]
+    return eligible_employees.sample(n=1).iloc[0]
+
+ticket_id_generator = TicketIDGenerator()
+
+def generate_ticket(simulation_date, customers, categories, employees, ticket_id_generator):
+    """
+        Generates one complete support ticket.
+        """
+
+    #Ticket creation time
+
+    created_at = generate_ticket_created_at(simulation_date)
+
+    #customer
+    customer = select_customer(customers)
+
+    #category
+    category = select_category(categories)
+
+    #employee
+    employee = select_employee(category, employees)
+
+    #priority
+    priority = get_ticket_priority()
+
+    #SLA Hours
+    sla_hours = get_sla_hours(customer['Plan'], priority)
+
+    #Build Ticket
+    ticket = {
+        "TicketID": ticket_id_generator.next_id(),
+        "CreatedAt": created_at,
+
+        "CustomerID": customer['CustomerID'],
+
+        "CategoryID": category['CategoryID'],
+        "DepartmentID": category['DepartmentID'],
+
+        "EmployeeID": employee['EmployeeID'],
+
+        "Priority": priority,
+        "SLAHours": sla_hours,
+
+        "Complexity": category['Complexity'],
+    }
+    return ticket
+
+def validate_ticket(ticket, customers, categories, employees):
+    """
+        Validates a generated ticket against
+        master data and business rules.
+
+        Returns:
+            True  -> ticket is valid
+            False -> ticket is invalid
+        """
+    #Customer Validation
+    customer_exists = (ticket['CustomerID'] in customers['CustomerID'].values)
+    if not customer_exists:
+        return False
+
+    #Category Validation
+    category_exists = (ticket['CategoryID'] in categories['CategoryID'].values)
+    if not category_exists:
+        return False
+
+    #Employee Validation
+    employee_exists = (ticket['EmployeeID'] in employees['EmployeeID'].values)
+    if not employee_exists:
+        return False
+
+    # Get category information
+    category = categories[categories['CategoryID'] == ticket['CategoryID']].iloc[0]
+
+    # Department validation
+    if ticket['DepartmentID'] != category['DepartmentID']:
+        return False
+
+    # Employee department validation
+    employee = employees[employees['EmployeeID'] == ticket['EmployeeID']].iloc[0]
+
+    if employee['DepartmentID'] != ticket['DepartmentID']:
+        return False
+
+    # Complexity validation
+    if ticket['Complexity'] != category['Complexity']:
+        return False
+
+    # SLA validation
+    customer = customers[customers['CustomerID'] == ticket['CustomerID']].iloc[0]
+
+    expected_sla = get_sla_hours(customer['Plan'], ticket['Priority'])
+
+    if ticket['SLAHours'] != expected_sla:
+        return False
+    return True
+
+
+#test
+if __name__ == "__main__":
+    customers = pd.read_csv('../data/customers.csv')
+    categories = pd.read_csv('../data/categories.csv')
+    employees = pd.read_csv('../data/employees.csv')
+
+    test_date = datetime(2024, 1, 1)
+
+    ticket = generate_ticket(test_date, customers, categories, employees, ticket_id_generator)
+
+    print("\n Generated Ticket")
+    print("-----------------")
+
+    for key, value in ticket.items():
+        print(f"{key:<15}: {value}")
+
+
+    is_valid = validate_ticket(ticket, customers, categories, employees)
+
+    print()
+    print("Ticket Validation")
+    print("-----------------")
+    print(f"Valid tickets: {is_valid}")
