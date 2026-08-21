@@ -1,7 +1,6 @@
 import pandas as pd
 from pathlib import Path
-
-from python.business_rules import select_customer_by_demand
+from business_rules import get_ticket_lifecycle
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 DATA_PATH = BASE_DIR / "data"
@@ -50,3 +49,17 @@ print("\nTicket Distribution by Customer Plan")
 print("=" * 45)
 
 print(ticket_plan["Plan"].value_counts(normalize=True).mul(100).round(2))
+
+
+#test
+# print("\nLIFECYCLE SIMULATION")
+# print("-" * 40)
+#
+# lifecycle_results = []
+#
+# for _ in range(10000):
+#     lifecycle = get_ticket_lifecycle()
+#     lifecycle_results.append(lifecycle)
+#
+# lifecycle_distribution = pd.Series(lifecycle_results).value_counts(normalize=True).mul(100).round(2)
+# print(lifecycle_distribution)
