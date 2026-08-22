@@ -135,3 +135,9 @@ if all_valid:
     print("INTEGRATION TEST STATUS: PASS")
 else:
     print("INTEGRATION TEST STATUS: FAIL")
+
+# Save test dataset
+test_output_path = DATA_DIR / "test_tickets.csv"
+
+df.to_csv(test_output_path, index=False)
+print(f"Test dataset saved to: {test_output_path}")
