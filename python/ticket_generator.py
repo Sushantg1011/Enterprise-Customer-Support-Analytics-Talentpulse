@@ -74,7 +74,7 @@ def generate_ticket(simulation_date, customers, categories, employees, ticket_id
     #SLA Hours
     sla_hours = get_sla_hours(customer['Plan'], priority)
 
-    first_response_hours = get_first_response_hours(sla_hours)
+    first_response_hours = get_first_response_hours(sla_hours,priority)
     first_response_at = created_at + timedelta(hours=first_response_hours)
 
     resolution_hours = get_resolution_hours(complexity=category["Complexity"],

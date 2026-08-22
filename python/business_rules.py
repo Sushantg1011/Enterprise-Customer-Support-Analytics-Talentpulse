@@ -159,15 +159,27 @@ def select_customer_by_demand(customers):
     weights = customers["Plan"].map(CUSTOMER_TICKET_DEMAND_FACTOR)
     return customers.sample(n=1, weights=weights).iloc[0]
 
-def get_first_response_hours(sla_hours):
+def get_first_response_hours(sla_hours, priority):
     """
-        Determines how long a support agent takes
-        to provide the first response.
+    Generates the first response duration.
 
-        The response time is a random percentage
-        of the ticket's SLA.
-        """
-    response_factor = random.uniform(0.05, 0.60)
+    Most tickets receive a response within SLA.
+    A controlled percentage of tickets breach SLA
+    based on priority.
+    """
+    breach_probability = {
+        "Critical": 0.10,
+        "High": 0.08,
+        "Medium": 0.05,
+        "Low": 0.03
+    }
+    breach = random.random() < breach_probability[priority]
+
+    if breach:
+        response_factor = random.uniform(1.05, 1.50)
+    else:
+        response_factor = random.uniform(0.10, 0.95)
+
     return round(sla_hours * response_factor, 4)
 
 def get_experience_level(experience_years):
