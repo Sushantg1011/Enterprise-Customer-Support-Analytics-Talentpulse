@@ -81,7 +81,7 @@ if __name__ == "__main__":
     tickets = run_simulation(start_date, end_date)
     df_tickets = pd.DataFrame(tickets)
 
-    output_path = DATA_DIR / "tickets_v2_demand_weighted.csv"
+    output_path = DATA_DIR / "tickets_v3_full_simulation.csv"
     df_tickets.to_csv(output_path, index=False)
 
     print()
