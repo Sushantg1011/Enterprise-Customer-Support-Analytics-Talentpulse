@@ -11,8 +11,8 @@ RANDOM_SEED = 42
 
 MONDAY_LOGIN_MULTIPLIER = 1.50
 
-RESOLUTION_VARIATION_MIN = 0.85
-RESOLUTION_VARIATION_MAX = 1.15
+RESOLUTION_VARIATION_MIN = 0.60
+RESOLUTION_VARIATION_MAX = 1.40
 
 # Agent Experience Factor
 EXPERIENCE_FACTOR = {
@@ -26,28 +26,6 @@ PLAN_FACTOR = {
     "Basic": 1.20,
     "Professional": 1.00,
     "Enterprise": 0.75
-}
-
-PRIORITY_FACTOR = {
-    "Low": 1.10,
-    "Medium": 1.00,
-    "High": 0.85,
-    "Critical": 0.70,
-}
-
-LIFECYCLE_FACTOR = {
-    "Simple": 1.00,
-    "Waiting Customer": 1.25,
-    "Escalated": 1.50,
-    "Reopened": 1.40,
-}
-
-# Customer Demand Factor
-
-CUSTOMER_TICKET_DEMAND_FACTOR = {
-    "Basic": 0.80,
-    "Professional": 1.00,
-    "Enterprise": 1.30
 }
 
 SLA_MATRIX = {
@@ -96,9 +74,3 @@ BUSINESS_HOURS_WEIGHT = [
         0.20,
         0.10
     ]
-
-BUSINESS_RESOLUTION_HOURS = {
-        "Easy": 4,
-        "Medium": 10,
-        "Hard": 20
-    }
