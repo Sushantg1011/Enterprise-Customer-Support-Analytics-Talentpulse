@@ -10,7 +10,9 @@ class TicketIDGenerator:
         self.current_id += 1
         return ticket_id
 
-generator = TicketIDGenerator()
+#test
+if __name__ == "__main__":
+    generator = TicketIDGenerator()
 
-for _ in range(5):
-    print(generator.next_id())
+    for _ in range(5):
+        print(generator.next_id())
