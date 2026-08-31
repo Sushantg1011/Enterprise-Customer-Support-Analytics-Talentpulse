@@ -105,6 +105,7 @@ def generate_ticket(simulation_date, customers, categories, employees, ticket_id
         "DepartmentID": category['DepartmentID'],
 
         "EmployeeID": employee['EmployeeID'],
+        "ExperienceLevel": experience_level,
 
         "Priority": priority,
 
