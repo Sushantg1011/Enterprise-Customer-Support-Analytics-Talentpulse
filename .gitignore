@@ -1,0 +1,29 @@
+
+# Python virtual environments
+.venv/
+venv/
+env/
+
+# Python cache and compiled files
+__pycache__/
+*.py[cod]
+
+# IDE settings
+.idea/
+.vscode/
+
+# Environment variables and secrets
+.env
+.env.*
+!.env.example
+
+# Debugging and temporary generated datasets
+/data/test_tickets.csv
+/data/tickets.csv
+/data/tickets_v3_run1.csv
+/data/tickets_v3_run2.csv
+/data/tickets_v3_reproducibility_test.csv
+
+# Operating system files
+.DS_Store
+Thumbs.db
