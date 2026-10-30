@@ -1,6 +1,7 @@
 import pandas as pd
 from datetime import datetime, timedelta
 from id_generator import TicketIDGenerator
+import business_rules
 from business_rules import (get_ticket_time, get_ticket_priority,
                             get_sla_hours, select_customer_by_demand,
                             get_ticket_lifecycle, get_first_response_hours,
@@ -31,7 +32,7 @@ def select_category(categories):
         Selects one support category
         from the category master data.
         """
-    return categories.sample(n=1).iloc[0]
+    return categories.sample(n=1, random_state=business_rules.rng).iloc[0]
 
 def select_employee(category, employees):
     """
@@ -40,7 +41,7 @@ def select_employee(category, employees):
         """
     department_id = category['DepartmentID']
     eligible_employees = employees[employees['DepartmentID'] == department_id]
-    return eligible_employees.sample(n=1).iloc[0]
+    return eligible_employees.sample(n=1, random_state=business_rules.rng).iloc[0]
 
 ticket_id_generator = TicketIDGenerator()
 

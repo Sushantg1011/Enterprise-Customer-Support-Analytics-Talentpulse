@@ -3,7 +3,7 @@ import pandas as pd
 from pathlib import Path
 from datetime import datetime, timedelta
 from config import (START_DATE, END_DATE, SIMULATION_DATE_FORMAT, RANDOM_SEED)
-from business_rules import get_daily_ticket_volume
+from business_rules import (get_daily_ticket_volume, reset_random_generator)
 from ticket_generator import (generate_ticket, validate_ticket)
 from id_generator import TicketIDGenerator
 
@@ -17,6 +17,7 @@ employees = pd.read_csv(DATA_DIR / "employees.csv")
 
 # Reproducible simulation
 random.seed(RANDOM_SEED)
+reset_random_generator()
 
 # convert configuration dates
 def get_simulation_dates():

@@ -33,6 +33,12 @@ for _ in range(TEST_TICKETS):
 #Convert to Dataframe
 df = pd.DataFrame(tickets)
 
+#Validate each ticket using validate_ticket()
+invalid_tickets = [ticket for ticket in tickets
+                  if not validate_ticket(ticket, customers, categories, employees)]
+
+print(f"Invalid tickets (validate ticket: {len(invalid_tickets):,}")
+
 #Validation
 
 print()
@@ -126,6 +132,7 @@ all_valid = (
     and len(invalid_resolution_duration) == 0
     and len(invalid_timestamps) == 0
     and len(invalid_sla) == 0
+    and len(invalid_tickets) == 0
 )
 
 print()

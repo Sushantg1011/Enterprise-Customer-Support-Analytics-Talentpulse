@@ -1,8 +1,15 @@
 import random
+import numpy as np
 from config import (DAILY_VOLUME, BUSINESS_HOURS, BUSINESS_HOURS_WEIGHT, SLA_MATRIX,
                     CUSTOMER_TICKET_DEMAND_FACTOR, PRIORITY_FACTOR, PLAN_FACTOR,
                     EXPERIENCE_FACTOR, LIFECYCLE_FACTOR, RESOLUTION_VARIATION_MIN,
-                    RESOLUTION_VARIATION_MAX, BUSINESS_RESOLUTION_HOURS)
+                    RESOLUTION_VARIATION_MAX, BUSINESS_RESOLUTION_HOURS, RANDOM_SEED)
+
+rng = np.random.default_rng(RANDOM_SEED)
+
+def reset_random_generator():
+    global rng
+    rng = np.random.default_rng(RANDOM_SEED)
 
 # Priority Distribution
 PRIORITY_WEIGHTS = {"Low": 0.35,
@@ -157,7 +164,7 @@ def select_customer_by_demand(customers):
         ticket demand weighting.
         """
     weights = customers["Plan"].map(CUSTOMER_TICKET_DEMAND_FACTOR)
-    return customers.sample(n=1, weights=weights).iloc[0]
+    return customers.sample(n=1, weights=weights, random_state=rng).iloc[0]
 
 def get_first_response_hours(sla_hours, priority):
     """
